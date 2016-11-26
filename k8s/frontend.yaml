@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: service-ingress
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  tls:
+  - secretName: tls-2
+  backend:
+    serviceName: frontend
+    servicePort: 8000
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend
+spec:
+  type: NodePort
+  ports:
+  - port: 8000
+    targetPort: app-port
+  selector:
+    name: frontend
+
+---
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: frontend
+      labels:
+        name: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: PLACEHOLDER_IMAGE_TAG
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+          name: app-port

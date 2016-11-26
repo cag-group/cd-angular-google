@@ -1,0 +1,8 @@
+<div ng-controller="KpisController">
+    {{errorMsg}}
+    <table>
+        <tr ng-repeat="kpi in kpis">
+            <td>{{ kpi.name }} = {{ kpi.value }}</td>
+        </tr>
+    </table>
+</div>
