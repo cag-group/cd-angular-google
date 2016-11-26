@@ -9,21 +9,19 @@ angular.module('myApp.view1', ['ngRoute'])
   });
 }])
 
-.controller('View1Ctrl', [ '$scope', '$http', function($scope, $http) {
+.controller('View1Ctrl', [ '$scope', '$http', 'envConfig', function($scope, $http, envConfig) {
 
-  $scope.getPrivateInfo = function() {
-    console.log("getPrivateInfo called");
+  $scope.getKpis = function() {
+    console.log("GET /kpis called");
     try {
-      $http.get("http://localhost:8080/privateinfo", function (req, res) {
+      $http.get(envConfig.apiUrl + "/kpis", function (req, res) {
         console.log("OK, response statusCode: " + res.statusCode);
-        res.json({message: 'privateInfo is:' + res.body});
+        res.json({message: 'kpis is:' + res.body});
         $scope.statusCode = res.statusCode;
-        $scope.privateInfo = res.body;
       });
     } catch (e) {
-      console.log("Error, response statusCode: " + res.statusCode);
-      $scope.statusCode = res.statusCode;
-      $scope.privateInfo = undefined;
+      console.log("Error, e: " + e);
+      $scope.statusCode = undefined;
     }
   };
 
